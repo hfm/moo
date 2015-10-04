@@ -24,7 +24,7 @@
       (provided
         (read-command) => ..CMD.. :times 1
         (handle-command ..CMD..) => nil :times 1
-        (print-result nil) => ..ANY.. :times 1)
+        (print-result nil) => nil :times 1) ;
 
       (run-shell) => anything
       (provided
@@ -33,6 +33,6 @@
         (handle-command ..CMD1..) => ..RES1.. :times 1
         (handle-command ..CMD2..) => ..RES2.. :times 1
         (handle-command ..CMD3..) => nil :times 1
-        (print-result ..RES1..) => ..ANY1.. :times 1
-        (print-result ..RES2..) => ..ANY2.. :times 1
-        (print-result nil) => ..ANY3.. :times 1))
+        (print-result ..RES1..) => ..RES1.. :times 1 ;
+        (print-result ..RES2..) => ..RES2.. :times 1 ;
+        (print-result nil) => nil :times 1)) ;

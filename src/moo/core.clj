@@ -5,11 +5,9 @@
 (unfinished read-command handle-command print-result)
 
 (defn run-shell []
-  (loop [cmd (read-command)]
-    (let [res (handle-command cmd)]
-      (print-result res)
-      (when res
-        (recur (read-command))))))
+  (some nil?
+        (map (comp print-result handle-command)
+             (repeatedly read-command))))
 
 (defn init-view []
   (println "Welcome to Moo!")
