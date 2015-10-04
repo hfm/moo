@@ -2,7 +2,14 @@
   (:use
     [midje.sweet :only (unfinished)]))
 
-(unfinished run-shell)
+(unfinished read-command handle-command print-result)
+
+(defn run-shell []
+  (loop [cmd (read-command)]
+    (let [res (handle-command cmd)]
+      (print-result res)
+      (when res
+        (recur (read-command))))))
 
 (defn init-view []
   (println "Welcome to Moo!")
