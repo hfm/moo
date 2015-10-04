@@ -1,3 +1,5 @@
+Original: https://github.com/gpsoft/moo and [Clojureでトップダウン開発](http://www.amazon.co.jp/exec/obidos/ASIN/B00KFJM69E/hifumiass-22/ref=nosim/)
+
 # moo
 
 A Clojure library designed to ... well, that part is up to you.
