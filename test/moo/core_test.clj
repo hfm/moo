@@ -9,3 +9,8 @@
         (init-model) => ..A.. :times 1
         (init-view) => ..B.. :times 1
         (run-shell) => ..C.. :times 1))
+
+(fact "about ini-model"
+      (reset! moo 123)
+      (init-model) => anything
+      @moo => nil)
