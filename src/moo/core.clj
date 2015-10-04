@@ -2,7 +2,11 @@
   (:use
     [midje.sweet :only (unfinished)]))
 
-(unfinished init-view run-shell)
+(unfinished run-shell)
+
+(defn init-view []
+  (println "Welcome to Moo!")
+  (println "Type 'help' to see how to play."))
 
 (def moo (atom nil))
 
@@ -14,4 +18,3 @@
   (init-model)
   (init-view)
   (run-shell))
-

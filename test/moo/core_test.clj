@@ -10,7 +10,11 @@
         (init-view) => ..B.. :times 1
         (run-shell) => ..C.. :times 1))
 
-(fact "about ini-model"
+(fact "about init-view"
+      (with-out-str
+        (init-view)) => #"^Welcome to Moo!(\n|\r|\r\n)Type 'help' to see how to play.(\n|\r|\r\n)$")
+
+(fact "about init-model"
       (reset! moo 123)
       (init-model) => anything
       @moo => nil)
