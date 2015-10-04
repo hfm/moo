@@ -1,3 +1,4 @@
 (ns moo.core-test
   (:use
-    moo.core))
+    moo.core
+    midje.sweet))
