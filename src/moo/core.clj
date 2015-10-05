@@ -5,9 +5,9 @@
 (unfinished read-command handle-command print-result)
 
 (defn run-shell []
-  (some nil?
-        (map (comp print-result handle-command)
-             (repeatedly read-command))))
+  (->> (repeatedly read-command)
+       (map (comp print-result handle-command))
+       (some nil?)))
 
 (defn init-view []
   (println "Welcome to Moo!")
