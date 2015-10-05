@@ -36,3 +36,7 @@
         (print-result ..RES1..) => ..RES1.. :times 1 ;
         (print-result ..RES2..) => ..RES2.. :times 1 ;
         (print-result nil) => nil :times 1)) ;
+
+(future-fact "about sub functions"
+             (handle-command ..EXIT..) => nil
+             (print-result ..ANY..) => ..ANY..)
