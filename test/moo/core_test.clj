@@ -3,21 +3,21 @@
     moo.core
     midje.sweet))
 
-(fact "about -main"
-      (-main) => ..C..
+(fact "abount command-from-line"
+      (command-from-line "help") => [:help]
+      (command-from-line "exit") => [:exit]
+      (command-from-line "quit") => [:quit]
+      (command-from-line "guess 123") => [:guess [1 2 3]]
+      (command-from-line "123") => [:guess [1 2 3]]
+      (command-from-line "gue 123") => [:unknown]
+      (command-from-line "1234") => [:unknown]
+      (command-from-line "foo") => [:unknown]
+      (command-from-line nil) => [:exit])
+
+(fact "abound read-command"
+      (read-command) => ..CMD..
       (provided
-        (init-model) => ..A.. :times 1
-        (init-view) => ..B.. :times 1
-        (run-shell) => ..C.. :times 1))
-
-(fact "about init-view"
-      (with-out-str
-        (init-view)) => #"^Welcome to Moo!(\n|\r|\r\n)Type 'help' to see how to play.(\n|\r|\r\n)$")
-
-(fact "about init-model"
-      (reset! moo 123)
-      (init-model) => anything
-      @moo => nil)
+        (command-from-line (read-line)) => ..CMD..))
 
 (fact "about run-shell"
       (run-shell) => anything
@@ -40,3 +40,18 @@
 (future-fact "about sub functions"
              (handle-command ..EXIT..) => nil
              (print-result ..ANY..) => ..ANY..)
+(fact "about init-view"
+      (with-out-str
+        (init-view)) => #"^Welcome to Moo!(\n|\r|\r\n)Type 'help' to see how to play.(\n|\r|\r\n)$")
+
+(fact "about init-model"
+      (reset! moo 123)
+      (init-model) => anything
+      @moo => nil)
+
+(fact "about -main"
+      (-main) => ..C..
+      (provided
+        (init-model) => ..A.. :times 1
+        (init-view) => ..B.. :times 1
+        (run-shell) => ..C.. :times 1))
