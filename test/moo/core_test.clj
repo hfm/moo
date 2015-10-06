@@ -3,16 +3,18 @@
     moo.core
     midje.sweet))
 
-(fact "abount command-from-line"
-      (command-from-line "help") => [:help]
-      (command-from-line "exit") => [:exit]
-      (command-from-line "quit") => [:quit]
-      (command-from-line "guess 123") => [:guess [1 2 3]]
-      (command-from-line "123") => [:guess [1 2 3]]
-      (command-from-line "gue 123") => [:unknown]
-      (command-from-line "1234") => [:unknown]
-      (command-from-line "foo") => [:unknown]
-      (command-from-line nil) => [:exit])
+(tabular "abount command-from-line"
+         (fact (command-from-line ?l) => ?c)
+         ?l          ?c
+         "help"      [:help]
+         "exit"      [:exit]
+         "quit"      [:quit]
+         "guess 123" [:guess [1 2 3]]
+         "123"       [:guess [1 2 3]]
+         "gue 123"   [:unknown]
+         "1234"      [:unknown]
+         "foo"       [:unknown]
+         nil         [:exit])
 
 (fact "abound read-command"
       (read-command) => ..CMD..
