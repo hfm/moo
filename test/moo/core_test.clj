@@ -3,6 +3,25 @@
     moo.core
     midje.sweet))
 
+(fact "about print-result"
+      (print-result [:a]) => [:a]
+      (provided
+        (println (result-text :a nil)) => nil)
+
+      (print-result [:a :b]) => [:a :b]
+      (provided
+        (println (result-text :a '(:b))) => nil)
+
+      (print-result [:a :b :c]) => [:a :b :c]
+      (provided
+        (println (result-text :a '(:b :c))) => nil)
+
+      (print-result nil) => nil
+      (provided
+        (result-text ..OP.. ..PARAMS..) => anything :times 0
+        (println ..TEXT..) => anything :times 0)
+      )
+
 (fact "about handle-command"
       (handle-command [:new]) => [:in-game ..CODE..]
       (provided
