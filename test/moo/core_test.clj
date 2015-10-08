@@ -3,6 +3,24 @@
     moo.core
     midje.sweet))
 
+(tabular "about result-text"
+         (fact (result-text ?op ?params) => ?text)
+         ?op           ?params         ?text
+         :in-game      [[7 2 6]]        "Good luck."
+         :keep-in-game [[1 2 3] "1H0E"] "123 ... 1H0E"
+         :pre-game     [:win  [7 2 6]]  "That's right, conguratulations!"
+         :pre-game     [:lose [7 2 6]]  "Boo! It was 726."
+         :keep         [:help]
+         (str
+           "Acceptable commands are:" \newline
+           "  help ... Show help message." \newline
+           "  new ... Start a new game." \newline
+           "  CODE ... Your guess like 123." \newline
+           "  quit ... Quit the game." \newline
+           "  exit ... Exit the program.")
+         :keep [:bad-state]   "You can't use the command now."
+         :keep [:bad-command] "No such command. Type 'help' for usage.")
+
 (fact "about print-result"
       (print-result [:a]) => [:a]
       (provided

@@ -4,9 +4,37 @@
 
 (declare init-model create-game)
 
-(unfinished create-game calc-state command-fits-state? result-text)
+(unfinished create-game calc-state command-fits-state?)
 
 (def moo (atom nil))
+
+(def help-text
+  (str
+    "Acceptable commands are:" \newline
+    "  help ... Show help message." \newline
+    "  new ... Start a new game." \newline
+    "  CODE ... Your guess like 123." \newline
+    "  quit ... Quit the game." \newline
+    "  exit ... Exit the program."))
+
+(defn result-text
+  "doc"
+  [op [p1 p2]]
+  (let [code-str (fn [[a b c]] (str a b c))]
+    (case op
+      :in-game      (str "Good luck."
+                        #_ p1) ; for debug.
+      :keep-in-game (str (code-str p1) " ... " p2)
+      :pre-game
+      (if (= p1 :win)
+        "That's right, conguratulations!"
+        (str "Boo! It was " (code-str p2) "."))
+      :keep
+      (case p1
+        :help help-text
+        :bad-state "You can't use the command now."
+        :bad-command "No such command. Type 'help' for usage."
+        ""))))
 
 (defn print-result
   [[op & params :as res]]
