@@ -4,9 +4,15 @@
 
 (declare init-model create-game)
 
-(unfinished print-result create-game calc-state command-fits-state?)
+(unfinished create-game calc-state command-fits-state?)
 
 (def moo (atom nil))
+
+(defn print-result
+  [[op & params :as res]]
+  (when res
+    (println (result-txt op params)))
+  res)
 
 (def handler-table
   {:new (fn [_] (create-game))
