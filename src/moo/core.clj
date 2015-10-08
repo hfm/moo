@@ -2,7 +2,28 @@
   (:use
     [midje.sweet :only (unfinished)]))
 
-(unfinished handle-command print-result)
+(declare init-model create-game)
+
+(unfinished print-result create-game calc-state command-fits-state?)
+
+(def moo (atom nil))
+
+(def handler-table
+  {:new (fn [_] (create-game))
+   :guess #(@moo %)
+   :help (fn [_] [:keep :help])
+   :quit (fn [_] (@moo :quit))
+   :exit (fn [_] nil)
+   :unknown (fn [_] [:keep :bad-command])})
+
+(defn handle-command
+  [[cmd param]]
+  (if (command-fits-state? cmd (calc-state))
+    (let [[op :as res]
+          ((handler-table cmd) param)]
+      (when (= op :pre-game) (init-model))
+      res)
+    [:keep :bad-state]))
 
 (def command-table
   {"new" :new
@@ -31,8 +52,6 @@
 (defn init-view []
   (println "Welcome to Moo!")
   (println "Type 'help' to see how to play."))
-
-(def moo (atom nil))
 
 (defn init-model []
   (reset! moo nil))
