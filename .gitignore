@@ -9,3 +9,19 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+### https://raw.github.com/github/gitignore/23aad6abc4ed1aafb425f6e09334c4e35ad146ac/clojure.gitignore
+
+pom.xml
+pom.xml.asc
+*jar
+/lib/
+/classes/
+/target/
+/checkouts/
+.lein-deps-sum
+.lein-repl-history
+.lein-plugins/
+.lein-failures
+.nrepl-port
+
+
