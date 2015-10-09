@@ -3,6 +3,12 @@
     moo.core
     midje.sweet))
 
+(fact "about calc-state"
+      (reset! moo nil)
+      (calc-state) => :pre-game
+      (reset! moo 123)
+      (calc-state) => :in-game)
+
 (fact "about create-game"
       (reset! moo nil)
       (create-game) => [:in-game ..CODE..]
