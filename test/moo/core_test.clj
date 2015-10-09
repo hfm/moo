@@ -3,6 +3,14 @@
     moo.core
     midje.sweet))
 
+(fact "about create-game"
+      (reset! moo nil)
+      (create-game) => [:in-game ..CODE..]
+      (provided
+        (gen-code) => ..CODE..
+        (moo-fn ..CODE..) => ..MOO..)
+      @moo => ..MOO..)
+
 (tabular "about result-text"
          (fact (result-text ?op ?params) => ?text)
          ?op           ?params         ?text

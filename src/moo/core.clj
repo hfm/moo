@@ -4,9 +4,15 @@
 
 (declare init-model create-game)
 
-(unfinished create-game calc-state command-fits-state?)
+(unfinished calc-state command-fits-state? gen-code moo-fn)
 
 (def moo (atom nil))
+
+(defn create-game
+  []
+  (let [code (gen-code)]
+    (reset! moo (moo-fn code))
+    [:in-game code]))
 
 (def help-text
   (str
