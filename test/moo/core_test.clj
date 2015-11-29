@@ -3,6 +3,8 @@
     moo.core
     midje.sweet))
 
+(load "gui_test")
+
 (fact "about the app"
       (with-out-str
         (with-in-str
@@ -247,4 +249,27 @@
       (provided
         (init-model) => ..A.. :times 1
         (init-view) => ..B.. :times 1
-        (run-shell) => ..C.. :times 1))
+        (run-shell) => ..C.. :times 1
+        (init-gui-view) => anything :times 0)
+
+      (-main "cui") => ..C..
+      (provided
+        (init-model) => ..A.. :times 1
+        (init-view) => ..B.. :times 1
+        (run-shell) => ..C.. :times 1
+        (init-gui-view) => anything :times 0)
+
+      (-main "gui") => ..B..
+      (provided
+        (init-model) => ..A.. :times 1
+        (init-view) => anything :times 0
+        (run-shell) => anything :times 0
+        (init-gui-view) => ..B.. :times 1)
+
+      (-main "foo") => nil
+      (provided
+        (init-model) => anything :times 0
+        (init-view) => anything :times 0
+        (run-shell) => anything :times 0
+        (init-gui-view) => anything :times 0)
+      )
