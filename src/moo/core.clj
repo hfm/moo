@@ -4,18 +4,21 @@
 
 (declare init-model create-game)
 
-(unfinished command-fits-state? gen-code moo-fn)
-
 (def moo (atom nil))
 
-(defn calc-state []
-  (if @moo :in-game :pre-game))
+(def command-table
+  {"new" :new
+   "help" :help
+   "quit" :quit
+   "exit" :exit})
 
-(defn create-game
-  []
-  (let [code (gen-code)]
-    (reset! moo (moo-fn code))
-    [:in-game code]))
+(def handler-table
+  {:new (fn [_] (create-game))
+   :guess #(@moo %)
+   :help (fn [_] [:keep :help])
+   :quit (fn [_] (@moo :quit))
+   :exit (fn [_] nil)
+   :unknown (fn [_] [:keep :bad-command])})
 
 (def help-text
   (str
@@ -25,6 +28,46 @@
     "  CODE ... Your guess like 123." \newline
     "  quit ... Quit the game." \newline
     "  exit ... Exit the program."))
+
+(def available-commands
+  {:pre-game #{:new :help :exit :unknown}
+   :in-game #{:guess :help :quit :exit :unknown}})
+
+(defn match-mark
+  "doc"
+  [guess code]
+  (let [count-true
+        (comp count (partial filter identity))
+        h (count-true (map = guess code))
+        e (count-true (for [g guess c code]
+                        (= g c)))]
+        (str h \H (- e h) \E)))
+
+(defn moo-fn
+  [code]
+  (fn [arg] ; arg should be :quit or a guess.
+    (if (= arg :quit)
+      [:pre-game :lose code]
+      (if (= arg code)
+        [:pre-game :win code]
+        [:keep-in-game arg
+         (match-mark arg code)]))))
+
+(defn gen-code []
+  (vec (take 3 (shuffle (range 1 10)))))
+
+(defn command-fits-state?
+  [cmd state]
+  (contains? (available-commands state) cmd))
+
+(defn calc-state []
+  (if @moo :in-game :pre-game))
+
+(defn create-game
+  []
+  (let [code (gen-code)]
+    (reset! moo (moo-fn code))
+    [:in-game code]))
 
 (defn result-text
   "doc"
@@ -36,7 +79,7 @@
       :keep-in-game (str (code-str p1) " ... " p2)
       :pre-game
       (if (= p1 :win)
-        "That's right, conguratulations!"
+        "That's right, congratulations!"
         (str "Boo! It was " (code-str p2) "."))
       :keep
       (case p1
@@ -51,14 +94,6 @@
     (println (result-text op params)))
   res)
 
-(def handler-table
-  {:new (fn [_] (create-game))
-   :guess #(@moo %)
-   :help (fn [_] [:keep :help])
-   :quit (fn [_] (@moo :quit))
-   :exit (fn [_] nil)
-   :unknown (fn [_] [:keep :bad-command])})
-
 (defn handle-command
   [[cmd param]]
   (if (command-fits-state? cmd (calc-state))
@@ -67,12 +102,6 @@
       (when (= op :pre-game) (init-model))
       res)
     [:keep :bad-state]))
-
-(def command-table
-  {"new" :new
-   "help" :help
-   "quit" :quit
-   "exit" :exit})
 
 (defn command-from-line [line]
   (if (nil? line)
