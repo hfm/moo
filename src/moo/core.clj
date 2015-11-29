@@ -1,8 +1,8 @@
-(ns moo.core
-  (:use
-    [midje.sweet :only (unfinished)]))
+(ns moo.core)
 
 (declare init-model create-game)
+
+(load "gui")
 
 (def moo (atom nil))
 
@@ -129,7 +129,12 @@
   (reset! moo nil))
 
 (defn -main
-  [& args]
-  (init-model)
-  (init-view)
-  (run-shell))
+  [& [opt]]
+  (let [ui (or (keyword opt) :cui)]
+    (when (#{:cui :gui} ui)
+      (init-model)
+      (if (= ui :cui)
+        (do
+          (init-view)
+          (run-shell))
+        (init-gui-view)))))
